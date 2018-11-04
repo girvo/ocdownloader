@@ -81,7 +81,7 @@ class YouTube
 
             if (count($Output) >= 2) {
                 $OutProcessed = array();
-                $current_index=1;
+                $current_index = $this->Handle ? 0 : 1;
                 for ($I = 0; $I < count($Output); $I++) {
                     if (mb_strlen(trim($Output[$I])) > 0) {
                         if (mb_strpos(urldecode($Output[$I]), 'https://') === 0

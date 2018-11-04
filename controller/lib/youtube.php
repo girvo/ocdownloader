@@ -19,7 +19,7 @@ function debugWrite($any) {
 
     $h = fopen('/var/www/my.log', 'w');
     foreach ($real as $a) {
-        $str = json_encode(a);
+        $str = json_encode($a);
         fwrite($h, $str, strlen($str));
     }
     fclose($h);

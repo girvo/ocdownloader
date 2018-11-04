@@ -136,7 +136,7 @@ class YTDownloader extends Controller
                         return new JSONResponse(array(
                               'ERROR' => true,
                               'MESSAGE' =>(string)$this->L10N->t('Unable to retrieve true YouTube video URL'),
-                              'Test' => $VideoData['Hello']
+                              'Test' => $VideoData
                         ));
                     }
                     $DL = array(

@@ -78,7 +78,6 @@ class YouTube
             $Output = explode("\n", $Output);
 
             if (count($Output) >= 2) {
-                debugWrite($Output);
                 $OutProcessed = array();
                 $current_index=1;
                 for ($I = 0; $I < count($Output); $I++) {
@@ -107,7 +106,8 @@ class YouTube
                 $OutProcessed['Shell'] = $ShellCommand;
                 return $OutProcessed;
             } else {
-                return ['Hello' => 'world'];
+                debugWrite(count($Output));
+                debugWrite($Output);
             }
         }
         return null;

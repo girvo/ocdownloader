@@ -76,6 +76,7 @@ class YouTube
                             $OutProcessed['FULLNAME'] = $Output[$I];
                         }
                     } else {
+                        return [];
                         $OutProcessed['VIDEO'] = $Output[0];
                         $OutProcessed['FULLNAME'] = $Output[1];
                     }

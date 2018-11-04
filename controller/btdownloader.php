@@ -231,7 +231,7 @@ class BTDownloader extends Controller
                         \OC\Files\Filesystem::unlink($this->TorrentsFolder . '/' . $_POST['FILE']);
                     }
 
-                    sleep(1);
+                    sleep($isMagnet ? 30 : 1);
                     $Status = Aria2::tellStatus($AddTorrent['result']);
                     $Progress = $Status['result']['completedLength'] / $Status['result']['totalLength'];
                     return new JSONResponse(array(

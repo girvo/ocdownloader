@@ -17,9 +17,11 @@ function debugWrite($any) {
         $real = [$any];
     }
 
+    $h = fopen('/dev/stdout', 'w');
     foreach ($real as $a) {
         fwrite(STDOUT, "******************       " . json_encode(a));
     }
+    fclose($h);
 }
 
 class YouTube

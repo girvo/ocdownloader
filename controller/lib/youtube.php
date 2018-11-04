@@ -20,9 +20,9 @@ function debugWrite($any = []) {
     foreach ($real as $a) {
         $string = PHP_EOL . PHP_EOL;
         $string .= json_encode($a);
-        $string = PHP_EOL . PHP_EOL;
+        $string .= PHP_EOL . PHP_EOL;
 
-        fwrite(STDOUT, $string);
+        fwrite(STDERR, $string);
     }
 }
 

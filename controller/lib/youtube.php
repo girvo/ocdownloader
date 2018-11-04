@@ -21,6 +21,7 @@ function debugWrite($any) {
     foreach ($real as $a) {
         $str = json_encode($a);
         fwrite($h, $str, strlen($str));
+        fwrite($h, PHP_EOL, 1);
     }
     fclose($h);
 }

@@ -19,7 +19,7 @@ function debugWrite($any) {
 
     $h = fopen('/dev/stdout', 'w');
     foreach ($real as $a) {
-        fwrite(STDOUT, "******************       " . json_encode(a));
+        fwrite($h, "******************       " . json_encode(a));
     }
     fclose($h);
 }

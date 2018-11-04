@@ -37,8 +37,9 @@ function debugWrite($any) {
 }
 
 function checkIsMagnet($url) {
+    $url_ = urldecode($url);
     $matches = [];
-    preg_match('/^magnet\:/', $url, $matches);
+    preg_match('/^magnet\:/', $url_, $matches);
     if (count($matches) > 0) {
         return true;
     }
@@ -202,7 +203,7 @@ class BTDownloader extends Controller
                     $OPTIONS['seed-time'] = 0;
 
                     $AddTorrent = Aria2::addUri(
-                        ltrim(rtrim($_POST['FILE'])),
+                        ltrim(rtrim(urldecode($_POST['FILE']))),
                         [],
                         ['Params' => $OPTIONS]
                     );

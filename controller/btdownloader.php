@@ -202,7 +202,7 @@ class BTDownloader extends Controller
                     $OPTIONS['seed-time'] = 0;
 
                     $AddTorrent = Aria2::addUri(
-                        ltrim(rtrim(urldecode($_POST['FILE']))),
+                        [ltrim(rtrim(urldecode($_POST['FILE'])))],
                         ['Params' => $OPTIONS]
                     );
                     debugWrite($AddTorrent);

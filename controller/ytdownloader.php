@@ -98,7 +98,7 @@ class YTDownloader extends Controller
         $Handle = $_POST['HANDLE'] === 'true';
 
         if (isset($_POST['FILE']) && strlen($_POST['FILE']) > 0
-              && Tools::checkURL($_POST['FILE'], $Handle) && isset($_POST['OPTIONS'])) {
+              && Tools::checkURL($_POST['FILE']) && isset($_POST['OPTIONS'])) {
             try {
                 if (!$this->AllowProtocolYT && !\OC_User::isAdminUser($this->CurrentUID)) {
                     throw new \Exception((string)$this->L10N->t('You are not allowed to use the YouTube protocol'));
@@ -136,7 +136,7 @@ class YTDownloader extends Controller
                         return new JSONResponse(array(
                               'ERROR' => true,
                               'MESSAGE' =>(string)$this->L10N->t('Unable to retrieve true YouTube video URL'),
-                              'TEST' => $VideoData['Shell']
+                              'Test' => $VideoData['Hello']
                         ));
                     }
                     $DL = array(

@@ -53,6 +53,7 @@ class YouTube
             .($ExtractAudio?' -f bestaudio -x':' -f best').($this->ForceIPv4 ? ' -4' : '')
             .(is_null($Proxy) ? '' : $Proxy)
         ;
+        fwrite(STDOUT, json_encode($ShellCommand));
 
         $Output = shell_exec($ShellCommand);
 
@@ -90,6 +91,8 @@ class YouTube
                 }
                 $OutProcessed['Shell'] = $ShellCommand;
                 return $OutProcessed;
+            } else {
+                return ['Hello' => 'world'];
             }
         }
         return null;

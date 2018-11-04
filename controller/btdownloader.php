@@ -199,7 +199,7 @@ class BTDownloader extends Controller
                     $Target = $_POST['FILENAME'];
                     $OPTIONS['dir'] = rtrim($this->AbsoluteDownloadsFolder, '/').'/'.$Target;
                     $OPTIONS['seed-ratio'] = $this->BTRatioToReach;
-                    $OPTIONS['seed-time'] = 0;
+                    $OPTIONS['seed-time'] = $this->SeedTime;
 
                     $AddTorrent = Aria2::addUri(
                         [ltrim(rtrim(urldecode($_POST['FILE'])))],

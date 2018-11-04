@@ -76,9 +76,9 @@ class YouTube
                             $OutProcessed['FULLNAME'] = $Output[$I];
                         }
                     } else {
-                        return ['OUTPUT' => $Output];
+                        // return ['OUTPUT' => $Output];
                         $OutProcessed['VIDEO'] = $Output[0];
-                        $OutProcessed['FULLNAME'] = $Output[1];
+                        $OutProcessed['FULLNAME'] = Tools::cleanString($Output[1]);
                     }
                  if ((!empty($OutProcessed['VIDEO']) || !empty($OutProcessed['AUDIO'])) && !empty($OutProcessed['FULLNAME']))
                     {

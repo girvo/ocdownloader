@@ -31,6 +31,6 @@ OC.L10N.register
 	    "FTPS": "FTPS",
 	    "BitTorrent": "BitTorrent",
 	    "YT Audio": "YT Audio",
-	    "YT Video": "YT Video"
+	    "YT-DL Video": "YT-DL Video"
 	}
 )

@@ -31,6 +31,6 @@ OC.L10N.register
         "FTPS": "FTPS",
         "BitTorrent": "비트토렌트",
         "YT Audio": "유튜브 오디오",
-        "YT Video": "유튜브 오디오"
+        "YT-DL Video": "유튜브 오디오"
     }
 )

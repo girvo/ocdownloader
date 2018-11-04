@@ -142,7 +142,7 @@ class YTDownloader extends Controller
                     $DL = array(
                         'URL' => $VideoData['VIDEO'],
                         'FILENAME' => Tools::cleanString($VideoData['FULLNAME']),
-                        'TYPE' => 'YT Video'
+                        'TYPE' => 'YT-DL Video'
                     );
                 }
 

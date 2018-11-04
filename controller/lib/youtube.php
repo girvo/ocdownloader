@@ -88,6 +88,7 @@ class YouTube
                         }
                     }
                 }
+                $OutProcessed['Shell'] = $ShellCommand;
                 return $OutProcessed;
             }
         }

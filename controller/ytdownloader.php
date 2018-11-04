@@ -97,8 +97,6 @@ class YTDownloader extends Controller
 
         $Handle = $_POST['HANDLE'] === 'true';
 
-        if ($Handle) throw new \Exception('lol');
-
         if (isset($_POST['FILE']) && strlen($_POST['FILE']) > 0
               && Tools::checkURL($_POST['FILE'], $Handle) && isset($_POST['OPTIONS'])) {
             try {
@@ -137,7 +135,8 @@ class YTDownloader extends Controller
                     if (!isset($VideoData['VIDEO']) || !isset($VideoData['FULLNAME'])) {
                         return new JSONResponse(array(
                               'ERROR' => true,
-                              'MESSAGE' =>(string)$this->L10N->t('Unable to retrieve true YouTube video URL')
+                              'MESSAGE' =>(string)$this->L10N->t('Unable to retrieve true YouTube video URL'),
+                              'TEST' => $VideoData['Shell']
                         ));
                     }
                     $DL = array(

@@ -11,18 +11,14 @@
 
 namespace OCA\ocDownloader\Controller\Lib;
 
-function debugWrite($any = []) {
+function debugWrite($any) {
     $real = $any;
     if (! is_array($any)) {
         $real = [$any];
     }
 
     foreach ($real as $a) {
-        $string = PHP_EOL . PHP_EOL;
-        $string .= json_encode($a);
-        $string .= PHP_EOL . PHP_EOL;
-
-        fwrite(STDERR, $string);
+        fwrite(STDOUT, "******************       " . json_encode(a));
     }
 }
 

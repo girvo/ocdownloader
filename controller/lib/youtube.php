@@ -77,7 +77,7 @@ class YouTube
         if (!is_null($Output)) {
             $Output = explode("\n", $Output);
             debugWrite('Not null: ' . count($Output));
-            debugWrite('Not null: ' . $Output);
+            debugWrite('Not null: ' . json_encode($Output));
 
             if (count($Output) >= 2) {
                 $OutProcessed = array();
@@ -93,6 +93,8 @@ class YouTube
                         } else {
                             $OutProcessed['FULLNAME'] = $Output[$I];
                         }
+                    } else {
+                        debugWrite('Got something weird...');
                     }
                  if ((!empty($OutProcessed['VIDEO']) || !empty($OutProcessed['AUDIO'])) && !empty($OutProcessed['FULLNAME']))
                     {
@@ -107,9 +109,6 @@ class YouTube
                 }
                 $OutProcessed['Shell'] = $ShellCommand;
                 return $OutProcessed;
-            } else {
-                debugWrite(count($Output));
-                debugWrite($Output);
             }
         }
         return null;

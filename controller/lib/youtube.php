@@ -81,7 +81,7 @@ class YouTube
 
             if (count($Output) >= 2) {
                 $OutProcessed = array();
-                $current_index = $this->Handle ? 0 : 1;
+                $current_index = 1;
                 for ($I = 0; $I < count($Output); $I++) {
                     if (mb_strlen(trim($Output[$I])) > 0) {
                         if (mb_strpos(urldecode($Output[$I]), 'https://') === 0
@@ -94,7 +94,8 @@ class YouTube
                             $OutProcessed['FULLNAME'] = $Output[$I];
                         }
                     } else {
-                        debugWrite('Got something weird...');
+                        $OutProcessed['VIDEO'] = $Output[0];
+                        $OutProcessed['FULLNAME'] = $Output[1];
                     }
                  if ((!empty($OutProcessed['VIDEO']) || !empty($OutProcessed['AUDIO'])) && !empty($OutProcessed['FULLNAME']))
                     {
@@ -107,7 +108,6 @@ class YouTube
                         }
                     }
                 }
-                $OutProcessed['Shell'] = $ShellCommand;
                 return $OutProcessed;
             }
         }

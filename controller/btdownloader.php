@@ -203,7 +203,6 @@ class BTDownloader extends Controller
 
                     $AddTorrent = Aria2::addUri(
                         ltrim(rtrim(urldecode($_POST['FILE']))),
-                        [],
                         ['Params' => $OPTIONS]
                     );
                     debugWrite($AddTorrent);

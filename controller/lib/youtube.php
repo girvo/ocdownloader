@@ -17,9 +17,10 @@ function debugWrite($any) {
         $real = [$any];
     }
 
-    $h = fopen('/dev/stdout', 'w');
+    $h = fopen('/var/www/my.log', 'w');
     foreach ($real as $a) {
-        fwrite($h, "******************       " . json_encode(a));
+        $str = json_encode(a);
+        fwrite($h, $str, strlen($str));
     }
     fclose($h);
 }
@@ -66,7 +67,7 @@ class YouTube
             .($ExtractAudio?' -f bestaudio -x':' -f best').($this->ForceIPv4 ? ' -4' : '')
             .(is_null($Proxy) ? '' : $Proxy)
         ;
-        debugWrite([$ShellCommand]);
+        debugWrite($ShellCommand);
 
         $Output = shell_exec($ShellCommand);
 
@@ -74,6 +75,8 @@ class YouTube
 
         if (!is_null($Output)) {
             $Output = explode("\n", $Output);
+            debugWrite('Not null: ' . count($Output));
+            debugWrite('Not null: ' . PHP_EOL . $Output);
 
             if (count($Output) >= 2) {
                 $OutProcessed = array();

@@ -77,7 +77,7 @@ class YouTube
         if (!is_null($Output)) {
             $Output = explode("\n", $Output);
             debugWrite('Not null: ' . count($Output));
-            debugWrite('Not null: ' . PHP_EOL . $Output);
+            debugWrite('Not null: ' . $Output);
 
             if (count($Output) >= 2) {
                 $OutProcessed = array();
@@ -85,7 +85,7 @@ class YouTube
                 for ($I = 0; $I < count($Output); $I++) {
                     if (mb_strlen(trim($Output[$I])) > 0) {
                         if (mb_strpos(urldecode($Output[$I]), 'https://') === 0
-                                && mb_strpos(urldecode($Output[$I]), '&mime=video/') !== false) {
+                                && (mb_strpos(urldecode($Output[$I]), '&mime=video/') !== false) || $this->Handle) {
                             $OutProcessed['VIDEO'] = $Output[$I];
                         } elseif (mb_strpos(urldecode($Output[$I]), 'https://') === 0
                                 && mb_strpos(urldecode($Output[$I]), '&mime=audio/') !== false) {

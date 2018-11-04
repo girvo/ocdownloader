@@ -95,14 +95,18 @@ class YTDownloader extends Controller
     {
         header( 'Content-Type: application/json; charset=utf-8');
 
+        $Handle = $_POST['HANDLE'] === 'true';
+
+        if ($Handle) throw new \Exception('lol');
+
         if (isset($_POST['FILE']) && strlen($_POST['FILE']) > 0
-              && Tools::checkURL($_POST['FILE']) && isset($_POST['OPTIONS'])) {
+              && Tools::checkURL($_POST['FILE'], $Handle) && isset($_POST['OPTIONS'])) {
             try {
                 if (!$this->AllowProtocolYT && !\OC_User::isAdminUser($this->CurrentUID)) {
                     throw new \Exception((string)$this->L10N->t('You are not allowed to use the YouTube protocol'));
                 }
 
-                $YouTube = new YouTube($this->YTDLBinary, $_POST['FILE']);
+                $YouTube = new YouTube($this->YTDLBinary, $_POST['FILE'], $Handle);
 
                 if (!is_null($this->ProxyAddress) && $this->ProxyPort > 0 && $this->ProxyPort <= 65536) {
                     $YouTube->SetProxy($this->ProxyAddress, $this->ProxyPort);

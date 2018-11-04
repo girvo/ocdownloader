@@ -20,7 +20,7 @@ class YouTube
     private $ProxyPort = 0;
     private $Handle;
 
-    public function __construct($YTDLBinary, $URL, $HANDLE = 'false')
+    public function __construct($YTDLBinary, $URL, $Handle = false)
     {
         $this->YTDLBinary = $YTDLBinary;
         $this->URL = $URL;

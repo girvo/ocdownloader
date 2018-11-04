@@ -140,10 +140,9 @@ class BTDownloader extends Controller
         header( 'Content-Type: application/json; charset=utf-8');
 
         if (isset($_POST['FILE']) && strlen(trim($_POST['FILE'])) > 0
-            && (Tools::checkURL($_POST['FILE']) 
-                || Tools::checkFilepath($this->TorrentsFolder . '/' . $_POST['FILE']) 
-                || checkIsMagnet($_POST['FILE'])
-            ) && isset($_POST['OPTIONS'])) {
+            && checkIsMagnet($_POST['FILE']) || (Tools::checkURL($_POST['FILE']) 
+                || Tools::checkFilepath($this->TorrentsFolder . '/' . $_POST['FILE']
+            ) && isset($_POST['OPTIONS']))) {
             try {
                 $isMagnet = checkIsMagnet($_POST['FILE']);
                 if (!$this->AllowProtocolBT && !\OC_User::isAdminUser($this->CurrentUID)) {

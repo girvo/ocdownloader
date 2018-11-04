@@ -18,11 +18,13 @@ class YouTube
     private $ForceIPv4 = true;
     private $ProxyAddress = null;
     private $ProxyPort = 0;
+    private $Handle;
 
-    public function __construct($YTDLBinary, $URL)
+    public function __construct($YTDLBinary, $URL, $HANDLE = 'false')
     {
         $this->YTDLBinary = $YTDLBinary;
         $this->URL = $URL;
+        $this->Handle = $Handle === 'true';
     }
 
     public function setForceIPv4($ForceIPv4)
@@ -47,16 +49,18 @@ class YouTube
         //youtube multibyte support
         putenv('LANG=en_US.UTF-8');
 
-        $Output = shell_exec(
-            $this->YTDLBinary.' -i \''.$this->URL.'\' --get-url --get-filename'
+        $ShellCommand = $this->YTDLBinary.' -i \''.$this->URL.'\' --get-url --get-filename'
             .($ExtractAudio?' -f bestaudio -x':' -f best').($this->ForceIPv4 ? ' -4' : '')
             .(is_null($Proxy) ? '' : $Proxy)
-        );
+        ;
+
+        $Output = shell_exec($ShellCommand);
 
         $index=(preg_match('/&index=(\d+)/', $this->URL, $current))?$current[1]:1;
 
         if (!is_null($Output)) {
             $Output = explode("\n", $Output);
+            fwrite(STDOUT, json_encode($output));
 
             if (count($Output) >= 2) {
                 $OutProcessed = array();

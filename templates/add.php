@@ -40,7 +40,7 @@ if ($_['CANCHECKFORUPDATE']) script ('ocdownloader', 'updater');
                         <?php } ?>
                         <?php if ($_['AllowProtocolYT']){ ?>
                         <div class="button" data-rel="OCDYT">
-                            <p data-rel="OCDYT">YOUTUBE</p>
+                            <p data-rel="OCDYT">YOUTUBE-DL</p>
                         </div>
                         <?php } ?>
                         <?php if ($_['AllowProtocolBT'] && strcmp ($_['WD'], 'ARIA2') == 0){ ?>
@@ -99,12 +99,12 @@ if ($_['CANCHECKFORUPDATE']) script ('ocdownloader', 'updater');
             <?php endif; if ($_['AllowProtocolYT']): ?>
             <div class="content-page" rel="OCDYT" style="display:none;">
                 <h3>
-                    <?php print ($l->t ('New YouTube download')); ?><span class="muted OCDLRMsg"></span>
+                    <?php print ($l->t ('New youtube-dl download')); ?><span class="muted OCDLRMsg"></span>
                     <div class="button launch">
-                        <a><?php print ($l->t ('Launch YouTube Download')); ?></a>
+                        <a><?php print ($l->t ('Launch youtube-dl Download')); ?></a>
                     </div>
                 </h3>
-                <input type="text" placeholder="<?php print ($l->t ('YouTube Video URL to download')); ?>" class="form-control url" />
+                <input type="text" placeholder="<?php print ($l->t ('youtube-dl Video URL to download')); ?>" class="form-control url" />
                 <div class="jumbotron">
                     <h5><?php print ($l->t ('Options')); ?></h5>
                     <div class="group-option">

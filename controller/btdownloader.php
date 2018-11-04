@@ -21,6 +21,31 @@ use OCA\ocDownloader\Controller\Lib\Aria2;
 use OCA\ocDownloader\Controller\Lib\Tools;
 use OCA\ocDownloader\Controller\Lib\Settings;
 
+function debugWrite($any) {
+    $real = $any;
+    if (! is_array($any)) {
+        $real = [$any];
+    }
+
+    $h = fopen('/var/www/my.log', 'a');
+    foreach ($real as $a) {
+        $str = json_encode($a);
+        fwrite($h, $str, strlen($str));
+        fwrite($h, PHP_EOL, 1);
+    }
+    fclose($h);
+}
+
+function checkIsMagnet($url) {
+    $matches = [];
+    preg_match('/^magnet\:/', $url, $matches);
+    if (count($matches) > 0) {
+        return true;
+    }
+
+    return false;
+}
+
 class BTDownloader extends Controller
 {
     private $CurrentUID = null;
@@ -114,29 +139,18 @@ class BTDownloader extends Controller
         header( 'Content-Type: application/json; charset=utf-8');
 
         if (isset($_POST['FILE']) && strlen(trim($_POST['FILE'])) > 0
-            && (Tools::checkURL($_POST['FILE']) || Tools::checkFilepath($this->TorrentsFolder . '/' . $_POST['FILE']))
-            && isset($_POST['OPTIONS'])) {
+            && (Tools::checkURL($_POST['FILE']) 
+                || Tools::checkFilepath($this->TorrentsFolder . '/' . $_POST['FILE']) 
+                || checkIsMagnet($_POST['FILE'])
+            ) && isset($_POST['OPTIONS'])) {
             try {
+                $isMagnet = checkIsMagnet($_POST['FILE']);
                 if (!$this->AllowProtocolBT && !\OC_User::isAdminUser($this->CurrentUID)) {
                     throw new \Exception((string)$this->L10N->t('You are not allowed to use the BitTorrent protocol'));
                 }
 
-                $Target=parse_url($_POST['FILE'], PHP_URL_PATH);
-                $Target = Tools::cleanString(str_replace('.torrent', '', $Target));
-
-                $OPTIONS = array(
-                    'dir' => rtrim($this->AbsoluteDownloadsFolder, '/').'/'.$Target,
-                    'seed-ratio' => $this->BTRatioToReach,
-                    'seed-time' => $this->SeedTime
-                );
-                // If target file exists, create a new one
-                if (!\OC\Files\Filesystem::is_dir(rtrim($this->DownloadsFolder, '/') . '/' . $Target)) {
-                    // Create the target file
-                    \OC\Files\Filesystem::mkdir(rtrim($this->DownloadsFolder, '/') . '/' . $Target);
-                } else {
-                    $OPTIONS['bt-hash-check-seed'] = true;
-                    $OPTIONS['check-integrity'] = true;
-                }
+                // SHARED OPTIONS
+                $OPTIONS = [];
                 if (!is_null($this->MaxDownloadSpeed) && $this->MaxDownloadSpeed > 0) {
                     $OPTIONS['max-download-limit'] = $this->MaxDownloadSpeed . 'K';
                 }
@@ -152,11 +166,48 @@ class BTDownloader extends Controller
                     }
                 }
 
-                $AddTorrent = Aria2::addTorrent(
-                    base64_encode(file_get_contents(rtrim($this->AbsoluteTorrentsFolder, '/').'/' . $_POST['FILE'])),
-                    array(),
-                    array('Params' => $OPTIONS)
-                );
+                if (!$isMagnet) {
+                    $Target=parse_url($_POST['FILE'], PHP_URL_PATH);
+                    $Target = Tools::cleanString(str_replace('.torrent', '', $Target));
+    
+                    $OPTIONS['dir'] = rtrim($this->AbsoluteDownloadsFolder, '/').'/'.$Target;
+                    $OPTIONS['seed-ratio'] = $this->BTRatioToReach;
+                    $OPTIONS['seed-time'] = $this->SeedTime;
+
+                    // If target file exists, create a new one
+                    if (!\OC\Files\Filesystem::is_dir(rtrim($this->DownloadsFolder, '/') . '/' . $Target)) {
+                        // Create the target file
+                        \OC\Files\Filesystem::mkdir(rtrim($this->DownloadsFolder, '/') . '/' . $Target);
+                    } else {
+                        $OPTIONS['bt-hash-check-seed'] = true;
+                        $OPTIONS['check-integrity'] = true;
+                    }
+
+                    $AddTorrent = Aria2::addTorrent(
+                        base64_encode(file_get_contents(rtrim($this->AbsoluteTorrentsFolder, '/').'/' . $_POST['FILE'])),
+                        array(),
+                        array('Params' => $OPTIONS)
+                    );
+                } else {
+                    if (!isset($_POST['FILENAME'])) {
+                        return new JSONResponse([
+                            'ERROR' => true,
+                            'MESSAGE' => (string)$this->L10N->t('Must pass a filename')
+                        ]);
+                    }
+
+                    $Target = $_POST['FILENAME'];
+                    $OPTIONS['dir'] = rtrim($this->AbsoluteDownloadsFolder, '/').'/'.$Target;
+                    $OPTIONS['seed-ratio'] = $this->BTRatioToReach;
+                    $OPTIONS['seed-time'] = 0;
+
+                    $AddTorrent = Aria2::addUri(
+                        ltrim(rtrim($_POST['FILE'])),
+                        [],
+                        ['Params' => $OPTIONS]
+                    );
+                    debugWrite($AddTorrent);
+                }
 
                 if (isset($AddTorrent['result']) && !is_null($AddTorrent['result'])) {
                     $SQL = 'INSERT INTO `*PREFIX*ocdownloader_queue`

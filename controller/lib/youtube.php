@@ -11,6 +11,21 @@
 
 namespace OCA\ocDownloader\Controller\Lib;
 
+function debugWrite($any = []) {
+    $real = $any;
+    if (! is_array($any)) {
+        $real = [$any];
+    }
+
+    foreach ($real as $a) {
+        $string = PHP_EOL . PHP_EOL;
+        $string .= json_encode($a);
+        $string = PHP_EOL . PHP_EOL;
+
+        fwrite(STDOUT, $string);
+    }
+}
+
 class YouTube
 {
     private $YTDLBinary = null;
@@ -53,7 +68,7 @@ class YouTube
             .($ExtractAudio?' -f bestaudio -x':' -f best').($this->ForceIPv4 ? ' -4' : '')
             .(is_null($Proxy) ? '' : $Proxy)
         ;
-        fwrite(STDOUT, json_encode($ShellCommand));
+        debugWrite([$ShellCommand]);
 
         $Output = shell_exec($ShellCommand);
 
@@ -61,9 +76,9 @@ class YouTube
 
         if (!is_null($Output)) {
             $Output = explode("\n", $Output);
-            fwrite(STDOUT, json_encode($output));
 
             if (count($Output) >= 2) {
+                debugWrite($Output);
                 $OutProcessed = array();
                 $current_index=1;
                 for ($I = 0; $I < count($Output); $I++) {
